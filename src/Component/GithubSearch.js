@@ -1,11 +1,11 @@
 import React,{Component} from 'react'
-
+import axios from 'axios'
 class GitHubSearch extends React.Component {
     constructor(props){ 
       super(props); 
        this.state = { 
         username: '',
-        userrepo: '',
+        userrepo: []
        };
     }
 
@@ -26,6 +26,13 @@ class GitHubSearch extends React.Component {
      })
    }
 
+   displayRepo(username) {
+    axios.get(`https://api.github.com/users/${username}/repos`)
+    .then(res => {
+      const userrepo = res.data;
+      this.setState({ userrepo });
+    })
+   }
     async handleSubmit(e) {
         e.preventDefault();
         let user = await this.getUser(this.refs.username.value);
@@ -45,6 +52,7 @@ class GitHubSearch extends React.Component {
      open_issues_count: repo.open_issues_count,
      size: repo.size,
   });
+    this.displayRepo(this.refs.username.value);
 
 }
 
@@ -87,9 +95,10 @@ class GitHubSearch extends React.Component {
             <p className="Search-intro">
                {user}
             </p>
-             <p>
-                 {repo}
-             </p>
+            The repositories for this user are :
+            <ul>
+            { this.state.userrepo.map(temp => <li>{temp.name}</li>)}
+            </ul>
              </div>
 );
 }
