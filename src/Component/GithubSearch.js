@@ -99,7 +99,7 @@ class GitHubSearch extends React.Component {
             <ul>
             { this.state.userrepo.map(temp => 
             <li>
-                <a href ="https://github.com/raghsiva"> {temp.name} </a>
+                <a href = {'https://github.com/' + this.state.username + '/' + temp.name}> {temp.name} </a>
             </li>)}
             </ul>
              </div>
